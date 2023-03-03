@@ -1,0 +1,20 @@
+region="us-east-1"
+vpc_01=`aws ec2 describe-vpcs --filters Name=tag:Name,Values=pdovpcpd01 --query Vpcs[].VpcId --output text --region $region`
+priv_subnet_03=`aws ec2 describe-subnets --filters Name=tag:Name,Values=pdosbnpvpd03 --query Subnets[].SubnetId --output text --region $region`
+priv_subnet_04=`aws ec2 describe-subnets --filters Name=tag:Name,Values=pdosbnpvpd04 --query Subnets[].SubnetId --output text --region $region`
+secret_mmad01=`aws secretsmanager describe-secret --secret-id pdosmspdmmad01 --query ARN --output text --region $region`
+directory_mmad01=$(aws ds describe-directories --query DirectoryDescriptions[?Name==\`capcom.pdo.com\`].DirectoryId --output text --region $region)
+secret_rdsmssql01=`aws secretsmanager describe-secret --secret-id pdosmspdrds01 --query ARN --output text --region $region`
+fsx_mmad=$(aws fsx describe-file-systems --query 'FileSystems[?Tags[?Key==`Name`]|[?Value==`pdofsxpdmmadsingaz`]].FileSystemId' --output text --region $region)
+security_group_dat01=`aws ec2 describe-security-groups --filters Name=tag:Name,Values=pdoscgpddat01 --query SecurityGroups[].GroupId --output text --region $region`
+terraform import aws_vpc.vpc_01 vpc-0eb1d70c06045b90d
+terraform import aws_subnet.priv_subnet_03 subnet-03f8a34a77d72aae5
+terraform import aws_subnet.priv_subnet_04 subnet-067105cec22ee8a36
+terraform import aws_secretsmanager_secret.mmad01 arn:aws:secretsmanager:us-east-1:000568877312:secret:pdosmspdmmad01-gu5Rbh
+terraform import aws_directory_service_directory.mmad01 d-9067ad5277
+terraform import aws_iam_role.rdsadauth pdoiarpdrdsauth01
+terraform import aws_secretsmanager_secret.rdsmssql01 arn:aws:secretsmanager:us-east-1:000568877312:secret:pdosmspdrds01-GHjCli
+terraform import aws_db_subnet_group.rdsmssql01 pdosbgpdrdsmssql01
+terraform import aws_db_instance.rdsmssql01 pdomssql01
+terraform import aws_fsx_windows_file_system.mmad fs-09c0b7a5d8b722948
+terraform import aws_security_group.dat01 sg-04113f6b91e45e6e5
