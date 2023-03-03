@@ -1,0 +1,13 @@
+terraform {
+  backend "azurerm" {
+    storage_account_name = "terraformstateab5def16"
+	container_name = "terraform-state"
+	key = "prod.terraform.tfstate"
+	access_key = "eAaP8LrC/8yZTMLGL7GR3aZrShCiLb4LsLZ+FQusnmvd00wOtYyvyK1c1mc9woZEzSaUi2fz7KnZ+AStmEbuhQ=="
+	}
+}
+
+
+
+service_principal_client_id = "35e7dddf-58ef-491c-a5c6-4850579a0b2a"  
+service_principal_client_secret = "aC$O5FU{TGbW[6GS"
